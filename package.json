@@ -8,11 +8,21 @@
     "build": "aocrunner build",
     "format": "prettier -w src"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snelling-a/Advent_of_Code_2021.git"
+  },
   "keywords": [
-    "aoc"
+    "aoc",
+    "advent of code",
+    "typescript"
   ],
-  "author": "Andrew Snelling",
+  "author": {
+    "name": "snelling-a",
+    "github": "https://github.com/snelling-a/"
+  },
   "license": "ISC",
+  "homepage": "https://github.com/snelling-a/Advent_of_Code_2021#readme",
   "devDependencies": {
     "@types/node": "^16.11.6",
     "aocrunner": "^1.4.5",
