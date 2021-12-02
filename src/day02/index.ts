@@ -58,18 +58,20 @@ const part2 = (rawInput: string) => {
 	return horizontalPosition * depth;
 };
 
-run({
-	part1: {
-		tests: [
-			{
-				input: `
+const testParams = `
         forward 5
         down 5
         forward 8
         up 3
         down 8
         forward 2
-      `,
+      `;
+
+run({
+	part1: {
+		tests: [
+			{
+				input: testParams,
 				expected: 150,
 			},
 		],
@@ -78,14 +80,7 @@ run({
 	part2: {
 		tests: [
 			{
-				input: `
-        forward 5
-        down 5
-        forward 8
-        up 3
-        down 8
-        forward 2
-      `,
+				input: testParams,
 				expected: 900,
 			},
 		],
