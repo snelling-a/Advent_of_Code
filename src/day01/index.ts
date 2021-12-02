@@ -4,33 +4,35 @@ const parseInput = (rawInput: string) => rawInput.split("\n").map(Number);
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-  let increaseCount = 0;
 
-  for (let i = 0; i < input.length; i++) {
-    if (input[i] > input[i - 1]) {
-      increaseCount++;
+  return input.reduce((previousValue, currentValue, i) => {
+    if (currentValue > input[i - 1]) {
+      previousValue++;
     }
-  }
 
-  return increaseCount;
+    return previousValue;
+  }, 0);
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
   let windowA = 0;
-  let increaseCount = 0;
 
-  for (let i = 1; i < input.length; i++) {
-    const windowB = input[i] + (input[i + 1] || 0) + (input[i + 2] || 0);
+  return input.reduce((previousValue, currentValue, i) => {
+    if (i === 0 || !input[i + 1]) {
+      return previousValue;
+    }
 
-    if (windowA < windowB) {
-      increaseCount++;
+    const windowB = currentValue + input[i + 1]  + input[i + 2] ;
+
+    if (windowB > windowA) {
+      previousValue++;
     }
 
     windowA = windowB;
-  }
 
-  return increaseCount;
+    return previousValue;
+  }, 0);
 };
 
 run({
