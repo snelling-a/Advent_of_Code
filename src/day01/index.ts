@@ -1,6 +1,7 @@
+import { inputToArrayOfNumbers } from '@utils';
 import run from 'aocrunner';
 
-const parseInput = (rawInput: string) => rawInput.split('\n').map(Number);
+const parseInput = (rawInput: string) => inputToArrayOfNumbers(rawInput);
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
