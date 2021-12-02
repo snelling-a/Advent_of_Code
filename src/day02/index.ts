@@ -1,9 +1,12 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput: string): [string, number][] =>
+const parseInput = (rawInput: string): ["forward" | "up" | "down", number][] =>
   rawInput
     .split("\n")
-    .map((line) => [line.split(" ")[0], parseInt(line.split(" ")[1])]);
+    .map((line) => [
+      line.split(" ")[0] as "forward" | "up" | "down",
+      parseInt(line.split(" ")[1]),
+    ]);
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
