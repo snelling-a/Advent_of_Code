@@ -1,12 +1,8 @@
+import { inputToStringNumberPairs } from '@utils';
 import run from 'aocrunner';
 
-const parseInput = (rawInput: string): ['forward' | 'up' | 'down', number][] =>
-	rawInput
-		.split('\n')
-		.map((line) => [
-			line.split(' ')[0] as 'forward' | 'up' | 'down',
-			parseInt(line.split(' ')[1]),
-		]);
+const parseInput = (rawInput: string) =>
+	inputToStringNumberPairs<'up' | 'down' | 'forward'>(rawInput);
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
