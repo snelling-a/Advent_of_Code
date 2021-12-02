@@ -1,66 +1,68 @@
-import run from "aocrunner";
+import run from 'aocrunner';
 
-const parseInput = (rawInput: string): ["forward" | "up" | "down", number][] =>
-  rawInput
-    .split("\n")
-    .map((line) => [
-      line.split(" ")[0] as "forward" | "up" | "down",
-      parseInt(line.split(" ")[1]),
-    ]);
+const parseInput = (rawInput: string): ['forward' | 'up' | 'down', number][] =>
+	rawInput
+		.split('\n')
+		.map((line) => [
+			line.split(' ')[0] as 'forward' | 'up' | 'down',
+			parseInt(line.split(' ')[1]),
+		]);
 
 const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-  let horizontalPosition = 0;
-  let depth = 0;
+	const input = parseInput(rawInput);
+	let horizontalPosition = 0;
+	let depth = 0;
 
-  for (const commandAndAmount of input) {
-    switch (commandAndAmount[0]) {
-      case "forward":
-        horizontalPosition += commandAndAmount[1];
-        break;
-      case "up":
-        depth -= commandAndAmount[1];
-        break;
-      case "down":
-        depth += commandAndAmount[1];
-      default:
-        break;
-    }
-  }
+	for (const commandAndAmount of input) {
+		switch (commandAndAmount[0]) {
+			case 'forward':
+				horizontalPosition += commandAndAmount[1];
+				break;
+			case 'up':
+				depth -= commandAndAmount[1];
+				break;
+			case 'down':
+				depth += commandAndAmount[1];
+				break;
+			default:
+				break;
+		}
+	}
 
-  return horizontalPosition * depth;
+	return horizontalPosition * depth;
 };
 
 const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput);
+	const input = parseInput(rawInput);
 
-  let horizontalPosition = 0;
-  let depth = 0;
-  let aim = 0;
+	let horizontalPosition = 0;
+	let depth = 0;
+	let aim = 0;
 
-  for (const commandAndAmount of input) {
-    switch (commandAndAmount[0]) {
-      case "forward":
-        horizontalPosition += commandAndAmount[1];
-        depth += commandAndAmount[1] * aim;
-        break;
-      case "up":
-        aim -= commandAndAmount[1];
-        break;
-      case "down":
-        aim += commandAndAmount[1];
-      default:
-        break;
-    }
-  }
-  return horizontalPosition * depth;
+	for (const commandAndAmount of input) {
+		switch (commandAndAmount[0]) {
+			case 'forward':
+				horizontalPosition += commandAndAmount[1];
+				depth += commandAndAmount[1] * aim;
+				break;
+			case 'up':
+				aim -= commandAndAmount[1];
+				break;
+			case 'down':
+				aim += commandAndAmount[1];
+				break;
+			default:
+				break;
+		}
+	}
+	return horizontalPosition * depth;
 };
 
 run({
-  part1: {
-    tests: [
-      {
-        input: `
+	part1: {
+		tests: [
+			{
+				input: `
         forward 5
         down 5
         forward 8
@@ -68,15 +70,15 @@ run({
         down 8
         forward 2
       `,
-        expected: 150,
-      },
-    ],
-    solution: part1,
-  },
-  part2: {
-    tests: [
-      {
-        input: `
+				expected: 150,
+			},
+		],
+		solution: part1,
+	},
+	part2: {
+		tests: [
+			{
+				input: `
         forward 5
         down 5
         forward 8
@@ -84,10 +86,10 @@ run({
         down 8
         forward 2
       `,
-        expected: 900,
-      },
-    ],
-    solution: part2,
-  },
-  trimTestInputs: true,
+				expected: 900,
+			},
+		],
+		solution: part2,
+	},
+	trimTestInputs: true,
 });

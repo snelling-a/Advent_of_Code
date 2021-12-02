@@ -1,40 +1,40 @@
 {
-  "name": "aoc2021",
-  "version": "1.0.0",
-  "description": "Advent of Code 2021 - solutions",
-  "type": "module",
-  "scripts": {
-    "start": "aocrunner day",
-    "build": "aocrunner build",
-    "lint": "eslint --fix",
-    "format": "prettier -w src",
-    "fixup": "npm run lint && npm run format"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/snelling-a/Advent_of_Code_2021.git"
-  },
-  "keywords": [
-    "aoc",
-    "advent of code",
-    "typescript"
-  ],
-  "author": {
-    "name": "snelling-a",
-    "github": "https://github.com/snelling-a/"
-  },
-  "license": "ISC",
-  "homepage": "https://github.com/snelling-a/Advent_of_Code_2021#readme",
-  "devDependencies": {
-    "@types/node": "^16.11.6",
-    "@typescript-eslint/eslint-plugin": "^5.5.0",
-    "@typescript-eslint/parser": "^5.5.0",
-    "aocrunner": "^1.4.5",
-    "eslint": "^8.3.0",
-    "prettier": "^2.4.1"
-  },
-  "dependencies": {},
-  "engines": {
-    "node": ">=16.0.0"
-  }
+	"name": "aoc2021",
+	"version": "1.0.0",
+	"description": "Advent of Code 2021 - solutions",
+	"type": "module",
+	"scripts": {
+		"start": "aocrunner day",
+		"build": "aocrunner build",
+		"lint": "eslint --fix",
+		"format": "prettier -w src",
+		"fixup": "npm run format && npm run lint"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/snelling-a/Advent_of_Code_2021.git"
+	},
+	"keywords": [
+		"aoc",
+		"advent of code",
+		"typescript"
+	],
+	"author": {
+		"name": "snelling-a",
+		"github": "https://github.com/snelling-a/"
+	},
+	"license": "ISC",
+	"homepage": "https://github.com/snelling-a/Advent_of_Code_2021#readme",
+	"devDependencies": {
+		"@types/node": "^16.11.6",
+		"@typescript-eslint/eslint-plugin": "^5.5.0",
+		"@typescript-eslint/parser": "^5.5.0",
+		"aocrunner": "^1.4.5",
+		"eslint": "^8.3.0",
+		"prettier": "^2.4.1"
+	},
+	"dependencies": {},
+	"engines": {
+		"node": ">=16.0.0"
+	}
 }

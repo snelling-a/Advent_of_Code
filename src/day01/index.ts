@@ -1,45 +1,45 @@
-import run from "aocrunner";
+import run from 'aocrunner';
 
-const parseInput = (rawInput: string) => rawInput.split("\n").map(Number);
+const parseInput = (rawInput: string) => rawInput.split('\n').map(Number);
 
 const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput);
+	const input = parseInput(rawInput);
 
-  return input.reduce((previousValue, currentValue, i) => {
-    if (currentValue > input[i - 1]) {
-      previousValue++;
-    }
+	return input.reduce((previousValue, currentValue, i) => {
+		if (currentValue > input[i - 1]) {
+			previousValue++;
+		}
 
-    return previousValue;
-  }, 0);
+		return previousValue;
+	}, 0);
 };
 
 const part2 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-  let windowA = 0;
+	const input = parseInput(rawInput);
+	let windowA = 0;
 
-  return input.reduce((previousValue, currentValue, i) => {
-    if (i === 0 || !input[i + 1]) {
-      return previousValue;
-    }
+	return input.reduce((previousValue, currentValue, i) => {
+		if (i === 0 || !input[i + 1]) {
+			return previousValue;
+		}
 
-    const windowB = currentValue + input[i + 1]  + input[i + 2] ;
+		const windowB = currentValue + input[i + 1] + input[i + 2];
 
-    if (windowB > windowA) {
-      previousValue++;
-    }
+		if (windowB > windowA) {
+			previousValue++;
+		}
 
-    windowA = windowB;
+		windowA = windowB;
 
-    return previousValue;
-  }, 0);
+		return previousValue;
+	}, 0);
 };
 
 run({
-  part1: {
-    tests: [
-      {
-        input: `
+	part1: {
+		tests: [
+			{
+				input: `
         199
         200
         208
@@ -50,15 +50,15 @@ run({
         269
         260
         263`,
-        expected: 7,
-      },
-    ],
-    solution: part1,
-  },
-  part2: {
-    tests: [
-      {
-        input: `
+				expected: 7,
+			},
+		],
+		solution: part1,
+	},
+	part2: {
+		tests: [
+			{
+				input: `
         607
         618
         618
@@ -67,10 +67,10 @@ run({
         716
         769
         792`,
-        expected: 5,
-      },
-    ],
-    solution: part2,
-  },
-  trimTestInputs: true,
+				expected: 5,
+			},
+		],
+		solution: part2,
+	},
+	trimTestInputs: true,
 });

@@ -1,31 +1,31 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint"],
-  "ignorePatterns": [
-    "node_modules",
-    "*.temp.*",
-    "*/**/*.temp.*",
-    "*.log",
-    "*/**/*.log",
-    ".idea",
-    ".vscode",
-    ".env",
-    "dist"
-  ],
-  "rules": {
-    "curly": ["error", "multi-line", "consistent"],
-    "indent": ["error", "tab"],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"]
-  }
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["@typescript-eslint"],
+	"ignorePatterns": [
+		"node_modules",
+		"*.temp.*",
+		"*/**/*.temp.*",
+		"*.log",
+		"*/**/*.log",
+		".idea",
+		".vscode",
+		".env",
+		"dist"
+	],
+	"rules": {
+		"curly": ["error", "multi-line", "consistent"],
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"linebreak-style": ["error", "unix"],
+		"quotes": ["error", "single"],
+		"semi": ["error", "always"]
+	}
 }
