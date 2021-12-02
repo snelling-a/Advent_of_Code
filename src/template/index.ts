@@ -1,3 +1,4 @@
+import { inputToArrayOfNumbers, inputToStringNumberPairs } from '@utils';
 import run from 'aocrunner';
 
 const parseInput = (rawInput: string) => rawInput;
