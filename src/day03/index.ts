@@ -2,11 +2,13 @@ import run from 'aocrunner';
 
 const parseInput = (rawInput: string) => rawInput.split('\n');
 
+const binaryToDecimal = (binary: string[]) => parseInt(binary[0], 2);
+
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 	const binaryLength = input[0].length;
 
-	let [gamma, epsilon] = ['', ''];
+	const [gamma, epsilon] = [[''], ['']];
 
 	for (let i = 0; i < binaryLength; i++) {
 		let [gammaCount, epsilonCount] = [0, 0];
@@ -19,25 +21,24 @@ const part1 = (rawInput: string) => {
 			}
 		}
 		if (gammaCount > epsilonCount) {
-			gamma = `${gamma}1`;
-			epsilon = `${epsilon}0`;
+			gamma[0] = `${gamma}1`;
+			epsilon[0] = `${epsilon}0`;
 		} else {
-			gamma = `${gamma}0`;
-			epsilon = `${epsilon}1`;
+			gamma[0] = `${gamma}0`;
+			epsilon[0] = `${epsilon}1`;
 		}
 	}
 
-	return parseInt(gamma, 2) * parseInt(epsilon, 2);
+	return binaryToDecimal(gamma) * binaryToDecimal(epsilon);
 };
 
-const part2 = (rawInput: string) => {
-	const input = parseInput(rawInput);
+const findTheLastBinary = (input: string[], findMost: boolean): number => {
 	const binaryLength = input[0].length;
 
 	let nextRound = input;
 	for (let i = 0; i < binaryLength; i++) {
 		if (nextRound.length === 1) {
-			return;
+			break;
 		}
 
 		let [ones, zeros] = [0, 0];
@@ -54,7 +55,7 @@ const part2 = (rawInput: string) => {
 			}
 		}
 
-		const value = ones >= zeros ? '1' : '0';
+		const value = findMost ? (ones >= zeros ? '1' : '0') : zeros <= ones ? '0' : '1';
 
 		nextRound = nextRound.reduce<Array<string>>((a, b) => {
 			if (b[i] === value) {
@@ -64,9 +65,18 @@ const part2 = (rawInput: string) => {
 			return a;
 		}, []);
 	}
-	const oxygenGeneratorRating = parseInt(nextRound[0], 2);
 
-	return oxygenGeneratorRating;
+	return binaryToDecimal(nextRound);
+};
+
+const part2 = (rawInput: string) => {
+	const input = parseInput(rawInput);
+
+	const oxygenGeneratorRating = findTheLastBinary(input, true);
+
+	const co2ScrubberRating = findTheLastBinary(input, false);
+
+	return oxygenGeneratorRating * co2ScrubberRating;
 };
 
 const testCase = `

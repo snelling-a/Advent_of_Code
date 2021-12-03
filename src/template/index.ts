@@ -1,4 +1,3 @@
-import { inputToArrayOfNumbers, inputToStringNumberPairs } from '@utils';
 import run from 'aocrunner';
 
 const parseInput = (rawInput: string) => rawInput;
@@ -15,17 +14,15 @@ const part2 = (rawInput: string) => {
 	return;
 };
 
+const testCase = '';
+
 run({
 	part1: {
-		tests: [
-			// { input: ``, expected: "" },
-		],
+		tests: [{ input: testCase, expected: '' }],
 		solution: part1,
 	},
 	part2: {
-		tests: [
-			// { input: ``, expected: "" },
-		],
+		tests: [{ input: testCase, expected: '' }],
 		solution: part2,
 	},
 	trimTestInputs: true,
