@@ -1,11 +1,21 @@
 import run from "aocrunner";
 
-const parseInput = (rawInput: string) => rawInput;
-
+const parseInput = (rawInput: string) => rawInput.split("");
+/*
+(= up
+) = down
+*/
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
-
-  return;
+  let count = 0;
+  input.forEach((char) => {
+    if (char === "(") {
+      count++;
+    } else if (char === ")") {
+      count--;
+    }
+  });
+  return count;
 };
 
 const part2 = (rawInput: string) => {
@@ -17,7 +27,15 @@ const part2 = (rawInput: string) => {
 run({
   part1: {
     tests: [
-      // { input: ``, expected: "" },
+      { input: `(())`, expected: 0 },
+      { input: `()()`, expected: 0 },
+      { input: `(((`, expected: 3 },
+      { input: `(()(()(`, expected: 3 },
+      { input: `))(((((`, expected: 3 },
+      { input: `())`, expected: -1 },
+      { input: `))(`, expected: -1 },
+      { input: `)))`, expected: -3 },
+      { input: `)())())`, expected: -3 },
     ],
     solution: part1,
   },
