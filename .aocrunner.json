@@ -33,10 +33,10 @@
     },
     {
       "part1": {
-        "solved": false,
-        "result": null,
+        "solved": true,
+        "result": "4147524",
         "attempts": [],
-        "time": null
+        "time": 1.25
       },
       "part2": {
         "solved": false,
