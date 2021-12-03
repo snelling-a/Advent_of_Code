@@ -1,8 +1,12 @@
-import { inputToStringNumberPairs } from '@utils';
 import run from 'aocrunner';
 
 const parseInput = (rawInput: string) =>
-	inputToStringNumberPairs<'up' | 'down' | 'forward'>(rawInput);
+	rawInput
+		.split('\n')
+		.map((line): ['up' | 'down' | 'forward', number] => [
+			line.split(' ')[0] as 'up' | 'down' | 'forward',
+			parseInt(line.split(' ')[1]),
+		]);
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
@@ -51,16 +55,17 @@ const part2 = (rawInput: string) => {
 				break;
 		}
 	}
+
 	return horizontalPosition * depth;
 };
 
 const testParams = `
-        forward 5
-        down 5
-        forward 8
-        up 3
-        down 8
-        forward 2
+forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2
       `;
 
 run({
