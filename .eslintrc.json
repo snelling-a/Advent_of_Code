@@ -3,7 +3,11 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"extends": [
+		"prettier",
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": "latest",
@@ -23,9 +27,30 @@
 	],
 	"rules": {
 		"curly": ["error", "multi-line", "consistent"],
-		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"indent": [
+			"error",
+			"tab",
+			{
+				"SwitchCase": 1,
+				"CallExpression": {
+					"arguments": "first"
+				},
+				"FunctionDeclaration": {
+					"parameters": "first"
+				},
+				"FunctionExpression": {
+					"parameters": "first"
+				},
+				"flatTernaryExpressions": true,
+				"offsetTernaryExpressions": true
+			}
+		],
 		"linebreak-style": ["error", "unix"],
 		"quotes": ["error", "single"],
-		"semi": ["error", "always"]
+		"semi": ["error", "always"],
+		"padding-line-between-statements": [
+			"error",
+			{ "blankLine": "always", "prev": "*", "next": "return" }
+		]
 	}
 }

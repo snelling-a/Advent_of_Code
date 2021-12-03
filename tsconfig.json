@@ -10,8 +10,7 @@
 		"allowSyntheticDefaultImports": true,
 		"moduleResolution": "node",
 		"forceConsistentCasingInFileNames": true,
-		"importHelpers": true,
-		"paths": { "@utils": ["./src/utils/index.ts"] }
+		"importHelpers": true
 	},
 	"include": ["src"],
 	"exclude": ["node_modules", "src/**/*.test.ts", "src/**/*.temp.ts"]
