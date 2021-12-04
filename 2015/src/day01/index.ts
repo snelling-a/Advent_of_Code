@@ -1,27 +1,40 @@
 import run from "aocrunner";
 
 const parseInput = (rawInput: string) => rawInput.split("");
-/*
-(= up
-) = down
-*/
-const part1 = (rawInput: string) => {
-  const input = parseInput(rawInput);
-  let count = 0;
-  input.forEach((char) => {
-    if (char === "(") {
-      count++;
-    } else if (char === ")") {
-      count--;
+
+const getFloor = (input: string[], getFirstUnderground: boolean = false) => {
+  let currentFloor = 0;
+  let firstUnderground = 0;
+
+  input.forEach((direction, index) => {
+    if (direction === "(") {
+      currentFloor++;
+    } else if (direction === ")") {
+      currentFloor--;
+    }
+
+    if (currentFloor === -1 && firstUnderground === 0) {
+      firstUnderground = index + 1;
     }
   });
-  return count;
+
+  if (getFirstUnderground && firstUnderground) {
+    return firstUnderground;
+  }
+
+  return currentFloor;
+};
+
+const part1 = (rawInput: string) => {
+  const input = parseInput(rawInput);
+
+  return getFloor(input);
 };
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
 
-  return;
+  return getFloor(input, true);
 };
 
 run({
@@ -41,7 +54,8 @@ run({
   },
   part2: {
     tests: [
-      // { input: ``, expected: "" },
+      { input: `)`, expected: 1 },
+      { input: `()())`, expected: 5 },
     ],
     solution: part2,
   },
