@@ -1,6 +1,7 @@
 import run from 'aocrunner';
 
-type Line = { number: number; marked: boolean }[];
+type Item = { number: number; marked: boolean };
+type Line = Item[];
 type Board = Line[];
 type Boards = Board[];
 type Draws = number[];
@@ -38,37 +39,40 @@ const markBoards = (boards: Boards, draw: number) => {
 	}
 };
 
-const checkWinner = (boards: Boards): Board | null => {
+const checkLines = (board: Board) => {
+	let winner = false;
+
+	for (const line of board) {
+		let marked = 0;
+
+		for (const n of line) {
+			if (n.marked) {
+				marked++;
+			}
+		}
+
+		if (marked === line.length) {
+			winner = true;
+		}
+	}
+
+	return winner;
+};
+
+const getColumns = (board: Board) => board[0].map((_, i) => board.map((line) => line[i]));
+
+const checkWinner = (boards: Boards) => {
+	let winner = false;
+
 	for (const board of boards) {
-		let winner = false;
+		const isLineWinner = checkLines(board);
+		const columns = getColumns(board);
+		const isColumnWinner = checkLines(columns);
 
-		for (const line of board) {
-			let marked = 0;
-
-			for (const n of line) {
-				if (n.marked) {
-					marked++;
-				}
-			}
-
-			if (marked === line.length) {
-				winner = true;
-			}
+		if (isLineWinner || isColumnWinner) {
+			winner = true;
 		}
-		const columns = board.reduce<Line[]>((all, curr) => [...all, curr], []);
 
-		for (const column of columns) {
-			let marked = 0;
-
-			for (const n of column) {
-				if (n.marked) {
-					marked++;
-				}
-			}
-			if (marked === column.length) {
-				winner = true;
-			}
-		}
 		if (winner) {
 			return board;
 		}
