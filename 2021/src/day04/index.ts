@@ -1,6 +1,6 @@
 import run from 'aocrunner';
 
-type Item = { number: number; marked: boolean };
+type Item = { number: number; drawn: boolean };
 type Line = Item[];
 type Board = Line[];
 type Boards = Board[];
@@ -14,9 +14,7 @@ const parseInput = (rawInput: string) => {
 			line
 				.trim()
 				.split(/\s+/)
-				.map((x) => {
-					return { number: parseInt(x), marked: false };
-				}),
+				.map((x) => ({ number: parseInt(x), drawn: false })),
 		),
 	);
 
@@ -32,26 +30,26 @@ const markBoards = (boards: Boards, draw: number) => {
 		for (const line of board) {
 			for (const n of line) {
 				if (n.number === draw) {
-					n.marked = true;
+					n.drawn = true;
 				}
 			}
 		}
 	}
 };
 
-const checkLines = (board: Board) => {
+const isBingo = (board: Board) => {
 	let winner = false;
 
 	for (const line of board) {
-		let marked = 0;
+		let drawn = 0;
 
 		for (const n of line) {
-			if (n.marked) {
-				marked++;
+			if (n.drawn) {
+				drawn++;
 			}
 		}
 
-		if (marked === line.length) {
+		if (drawn === line.length) {
 			winner = true;
 		}
 	}
@@ -61,32 +59,38 @@ const checkLines = (board: Board) => {
 
 const getColumns = (board: Board) => board[0].map((_, i) => board.map((line) => line[i]));
 
-const checkWinner = (boards: Boards) => {
-	let winner = false;
-
-	for (const board of boards) {
-		const isLineWinner = checkLines(board);
-		const columns = getColumns(board);
-		const isColumnWinner = checkLines(columns);
-
-		if (isLineWinner || isColumnWinner) {
-			winner = true;
+const getWinner = (boards: Boards, first: boolean) => {
+	let boardsLeft = boards;
+	for (const board of boardsLeft) {
+		if (boardsLeft.length === 1) {
+			return boardsLeft[0];
 		}
 
-		if (winner) {
+		const isLineWinner = isBingo(board);
+		const columns = getColumns(board);
+		const isColumnWinner = isBingo(columns);
+
+		const isWinner = isLineWinner || isColumnWinner;
+
+		if (first && isWinner) {
 			return board;
+		}
+
+		if (!first && isWinner) {
+			const boardIndex = boardsLeft.indexOf(board);
+			boardsLeft = boardsLeft.splice(boardIndex, 1);
 		}
 	}
 
 	return null;
 };
 
-const calculateScore = (winningBoard: Board, lastDraw: number): number => {
+const getScore = (winningBoard: Board, lastDraw: number): number => {
 	let score = 0;
 
 	for (const line of winningBoard) {
 		for (const n of line) {
-			if (!n.marked) {
+			if (!n.drawn) {
 				score += n.number;
 			}
 		}
@@ -101,16 +105,25 @@ const part1 = (rawInput: string) => {
 	for (const draw of draws) {
 		markBoards(boards, draw);
 
-		const winner = checkWinner(boards);
+		const winner = getWinner(boards, true);
 
 		if (winner) {
-			return calculateScore(winner, draw);
+			return getScore(winner, draw);
 		}
 	}
 };
 
 const part2 = (rawInput: string) => {
 	const { draws, boards } = parseInput(rawInput);
+
+	for (const draw of draws) {
+		markBoards(boards, draw);
+
+		const lastWinner = getWinner(boards, false);
+		if (lastWinner) {
+			return getScore(lastWinner, draw);
+		}
+	}
 
 	return;
 };
@@ -143,7 +156,7 @@ run({
 		solution: part1,
 	},
 	part2: {
-		tests: [{ input: testCase, expected: '' }],
+		tests: [{ input: testCase, expected: 1924 }],
 		solution: part2,
 	},
 	trimTestInputs: true,
