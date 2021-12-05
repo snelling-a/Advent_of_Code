@@ -1,20 +1,12 @@
 import run from "aocrunner";
 
 class Present {
-  private readonly length: number;
-  private readonly width: number;
-  private readonly height: number;
   private readonly baseAreas: number[];
+  private readonly baseDimensions: number[];
 
   constructor(length: number, width: number, height: number) {
-    this.length = length;
-    this.width = width;
-    this.height = height;
-    this.baseAreas = [
-      this.length * this.width,
-      this.width * this.height,
-      this.height * this.length,
-    ];
+    this.baseDimensions = [length, width, height];
+    this.baseAreas = [length * width, width * height, height * length];
   }
 
   private getBaseArea() {
@@ -25,8 +17,23 @@ class Present {
     return Math.min(...this.baseAreas);
   }
 
+  private getCubicVolume() {
+    return this.baseDimensions.reduce((a, b) => a * b, 1);
+  }
+
+  private getShortestDistanceAround() {
+    return this.baseDimensions
+      .sort((a, b) => a - b)
+      .slice(0, 2)
+      .reduce((a, b) => a + 2 * b, 0);
+  }
+
   public getWrappingPaperArea() {
     return this.getBaseArea() + this.getExtraArea();
+  }
+
+  public getRibbonLength() {
+    return this.getShortestDistanceAround() + this.getCubicVolume();
   }
 }
 
@@ -51,20 +58,25 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
 
-  return;
+  return input.reduce(
+    (totalRibbonLength: number, currentPresent) =>
+      (totalRibbonLength += currentPresent.getRibbonLength()),
+    0,
+  );
 };
 
 run({
   part1: {
     tests: [
       { input: `2x3x4`, expected: 58 },
-      // { input: `1x1x10`, expected: 43 },
+      { input: `1x1x10`, expected: 43 },
     ],
     solution: part1,
   },
   part2: {
     tests: [
-      // { input: ``, expected: "" },
+      { input: `2x3x4`, expected: 34 },
+      { input: `1x1x10`, expected: 14 },
     ],
     solution: part2,
   },
