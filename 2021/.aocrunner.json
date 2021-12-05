@@ -52,11 +52,11 @@
         "attempts": [
           "28987"
         ],
-        "time": 15.3
+        "time": 30.01
       },
       "part2": {
-        "solved": false,
-        "result": "11774",
+        "solved": true,
+        "result": "4495",
         "attempts": [
           "9858",
           "6734",
@@ -64,7 +64,7 @@
           "13202",
           "77372"
         ],
-        "time": 4.81
+        "time": 19.42
       }
     },
     {
