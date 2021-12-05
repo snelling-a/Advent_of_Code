@@ -19,12 +19,12 @@
     },
     {
       "part1": {
-        "solved": false,
-        "result": "1632398",
+        "solved": true,
+        "result": "1606483",
         "attempts": [
           "1632398"
         ],
-        "time": 1.54
+        "time": 1.81
       },
       "part2": {
         "solved": false,
