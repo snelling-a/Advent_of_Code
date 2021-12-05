@@ -1,6 +1,8 @@
 import run from 'aocrunner';
 
-const parseInput = (rawInput: string) => rawInput;
+type Input = string[];
+
+const parseInput = (rawInput: string): Input => rawInput.split('\n');
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
