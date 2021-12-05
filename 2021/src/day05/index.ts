@@ -8,8 +8,11 @@ interface SeaFloorMap {
 }
 
 class SeaFloorMap {
-	constructor() {
+	includeDiagonals: boolean;
+
+	constructor(includeDiagonals: boolean) {
 		this.seaFloorMap = new Map<string, number>();
+		this.includeDiagonals = includeDiagonals;
 	}
 
 	addPoint(p: Point) {
@@ -20,6 +23,20 @@ class SeaFloorMap {
 			this.seaFloorMap.set(pointString, current + 1);
 		} else {
 			this.seaFloorMap.set(pointString, 1);
+		}
+	}
+
+	drawLines(points: Input) {
+		if (this.includeDiagonals) {
+			points.forEach((line) => {
+				this.drawLine(line);
+			});
+		} else {
+			points.forEach((line) => {
+				if (line.start.x === line.end.x || line.start.y === line.end.y) {
+					this.drawLine(line);
+				}
+			});
 		}
 	}
 
@@ -77,21 +94,18 @@ const parseInput = (rawInput: string): Input =>
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	const seaFloorMap = new SeaFloorMap();
-
-	input.forEach((line) => {
-		if (line.start.x === line.end.x || line.start.y === line.end.y) {
-			seaFloorMap.drawLine(line);
-		}
-	});
+	const seaFloorMap = new SeaFloorMap(false);
+	seaFloorMap.drawLines(input);
 
 	return seaFloorMap.getOverlaps();
 };
 
 const part2 = (rawInput: string) => {
 	const input = parseInput(rawInput);
+	const seaFloorMap = new SeaFloorMap(true);
+	seaFloorMap.drawLines(input);
 
-	return;
+	return seaFloorMap.getOverlaps();
 };
 
 const testCase = `
@@ -113,7 +127,7 @@ run({
 		solution: part1,
 	},
 	part2: {
-		tests: [{ input: testCase, expected: '' }],
+		tests: [{ input: testCase, expected: 12 }],
 		solution: part2,
 	},
 	trimTestInputs: true,
