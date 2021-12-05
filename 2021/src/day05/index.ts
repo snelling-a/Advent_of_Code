@@ -10,13 +10,13 @@ interface SeaFloorMap {
 class SeaFloorMap {
 	includeDiagonals: boolean;
 
-	constructor(includeDiagonals: boolean) {
+	constructor(includeDiagonals = true) {
 		this.seaFloorMap = new Map<string, number>();
 		this.includeDiagonals = includeDiagonals;
 	}
 
-	addPoint(p: Point) {
-		const pointString = JSON.stringify(p);
+	addPoint(point: Point) {
+		const pointString = JSON.stringify(point);
 		const current = this.seaFloorMap.get(pointString);
 
 		if (current) {
@@ -27,17 +27,17 @@ class SeaFloorMap {
 	}
 
 	drawLines(points: Input) {
-		if (this.includeDiagonals) {
-			points.forEach((line) => {
-				this.drawLine(line);
-			});
-		} else {
-			points.forEach((line) => {
+		if (!this.includeDiagonals) {
+			return points.forEach((line) => {
 				if (line.start.x === line.end.x || line.start.y === line.end.y) {
 					this.drawLine(line);
 				}
 			});
 		}
+
+		points.forEach((line) => {
+			this.drawLine(line);
+		});
 	}
 
 	drawLine(line: Line) {
@@ -52,7 +52,6 @@ class SeaFloorMap {
 			if (x < line.end.x) {
 				x++;
 			}
-
 			if (y > line.end.y) {
 				y--;
 			}
@@ -102,7 +101,8 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
 	const input = parseInput(rawInput);
-	const seaFloorMap = new SeaFloorMap(true);
+
+	const seaFloorMap = new SeaFloorMap();
 	seaFloorMap.drawLines(input);
 
 	return seaFloorMap.getOverlaps();
