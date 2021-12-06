@@ -34,6 +34,7 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
 	const startingLanternfish = parseInput(rawInput);
+	console.log('startingLanternfish :>> ', startingLanternfish);
 
 	return modelLanternfishGrowthRate(startingLanternfish, 256);
 };
@@ -42,12 +43,13 @@ const testCase = '3,4,3,1,2';
 
 run({
 	part1: {
-		tests: [{ input: testCase, expected: 5934 }],
+		tests: [{ name: 'Lanternfish, 80 days', input: testCase, expected: 5934 }],
 		solution: part1,
 	},
 	part2: {
-		tests: [{ input: testCase, expected: 26984457539 }],
+		tests: [{ name: 'Lanternfish, 256 days', input: testCase, expected: 26984457539 }],
 		solution: part2,
 	},
 	trimTestInputs: true,
+	onlyTests: true,
 });

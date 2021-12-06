@@ -29,7 +29,7 @@
 		"@types/node": "^16.11.6",
 		"@typescript-eslint/eslint-plugin": "^5.5.0",
 		"@typescript-eslint/parser": "^5.5.0",
-		"aocrunner": "^1.4.11",
+		"aocrunner": "^1.6.0",
 		"eslint": "^8.3.0",
 		"eslint-config-prettier": "^8.3.0",
 		"prettier": "^2.4.1"

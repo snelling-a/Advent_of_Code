@@ -20,12 +20,13 @@ const testCase = '';
 
 run({
 	part1: {
-		tests: [{ input: testCase, expected: '' }],
+		tests: [{ name: '', input: testCase, expected: '' }],
 		solution: part1,
 	},
 	part2: {
-		tests: [{ input: testCase, expected: '' }],
+		tests: [{ name: '', input: testCase, expected: '' }],
 		solution: part2,
 	},
 	trimTestInputs: true,
+	onlyTests: true,
 });
