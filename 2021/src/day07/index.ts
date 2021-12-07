@@ -2,43 +2,49 @@ import run from 'aocrunner';
 
 type Input = number[];
 
-const parseInput = (rawInput: string): Input => rawInput.split(',').map(Number);
+const parseInput = (rawInput: string): Input =>
+	rawInput
+		.split(',')
+		.map(Number)
+		.sort((a, b) => a - b);
 
-const getMeanValue = (input: Input) =>
-	Math.round(input.reduce((acc, curr) => acc + curr, 0) / input.length);
+const getAllPossiblePositions = (input: Input) =>
+	new Array(input[input.length - 1] - input[0])
+		.fill(0)
+		.reduce((positions, _, index) => [...positions, index + 1], [0]);
 
-const getMedianValue = (values: number[]) => {
-	values.sort((a, b) => a - b);
+const compoundFuel = (number: number) => Math.floor((number * (number + 1)) / 2);
 
-	const half = Math.floor(values.length / 2);
+const calculateFuelCosts = (input: Input, isCompounding = false) => {
+	const allPossiblePositions = getAllPossiblePositions(input);
 
-	if (values.length % 2) {
-		return values[half];
-	} else {
-		return (values[half - 1] + values[half]) / 2;
+	let optimalFuel = -1;
+
+	for (const position of allPossiblePositions) {
+		const fuelNeededForThisPosition = input.reduce((acc, curr) => {
+			const diff = Math.abs(position - curr);
+
+			return acc + (isCompounding ? compoundFuel(diff) : diff);
+		}, 0);
+
+		optimalFuel === -1
+			? (optimalFuel = fuelNeededForThisPosition)
+			: (optimalFuel = Math.min(optimalFuel, fuelNeededForThisPosition));
 	}
-};
 
-const compoundFuel = (number: number): number => (number * number + number) / 2;
-
-const calculateFuelCosts = (input: Input, moveTo: number, isCompounding = false) => {
-	return input.reduce((acc, curr) => {
-		const diff = Math.abs(curr - moveTo);
-
-		return isCompounding ? acc + compoundFuel(diff) : acc + diff;
-	}, 0);
+	return optimalFuel;
 };
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	return calculateFuelCosts(input, getMedianValue(input));
+	return calculateFuelCosts(input);
 };
 
 const part2 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	return calculateFuelCosts(input, getMeanValue(input), true);
+	return calculateFuelCosts(input, true);
 };
 
 const testCase = `
@@ -55,5 +61,5 @@ run({
 		solution: part2,
 	},
 	trimTestInputs: true,
-	onlyTests: false,
+	onlyTests: true,
 });
