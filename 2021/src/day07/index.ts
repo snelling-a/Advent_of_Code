@@ -4,7 +4,10 @@ type Input = number[];
 
 const parseInput = (rawInput: string): Input => rawInput.split(',').map(Number);
 
-const median = (values: number[]) => {
+const getMeanValue = (input: Input) =>
+	Math.round(input.reduce((acc, curr) => acc + curr, 0) / input.length);
+
+const getMedianValue = (values: number[]) => {
 	values.sort((a, b) => a - b);
 
 	const half = Math.floor(values.length / 2);
@@ -12,28 +15,30 @@ const median = (values: number[]) => {
 	if (values.length % 2) {
 		return values[half];
 	} else {
-		return (values[half - 1] + values[half]) / 2.0;
+		return (values[half - 1] + values[half]) / 2;
 	}
 };
 
-const calculateFuelCosts = (input: Input) => {
-	const moveTo = median(input);
+const compoundFuel = (number: number): number => (number * number + number) / 2;
 
+const calculateFuelCosts = (input: Input, moveTo: number, isCompounding = false) => {
 	return input.reduce((acc, curr) => {
-		return acc + Math.abs(curr - moveTo);
+		const diff = Math.abs(curr - moveTo);
+
+		return isCompounding ? acc + compoundFuel(diff) : acc + diff;
 	}, 0);
 };
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	return calculateFuelCosts(input);
+	return calculateFuelCosts(input, getMedianValue(input));
 };
 
 const part2 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	return;
+	return calculateFuelCosts(input, getMeanValue(input), true);
 };
 
 const testCase = `
@@ -42,11 +47,11 @@ const testCase = `
 
 run({
 	part1: {
-		tests: [{ name: 'Whales', input: testCase, expected: 37 }],
+		tests: [{ name: 'Crabs!', input: testCase, expected: 37 }],
 		solution: part1,
 	},
 	part2: {
-		tests: [{ name: 'Whales', input: testCase, expected: '' }],
+		tests: [{ name: 'Compounding Crabs!', input: testCase, expected: 168 }],
 		solution: part2,
 	},
 	trimTestInputs: true,
