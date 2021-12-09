@@ -1,12 +1,13 @@
 import run from 'aocrunner';
 
 type Input = number[][];
+type Coord = { row: number; col: number; risk: number };
 
 const parseInput = (rawInput: string): Input =>
 	rawInput.split('\n').map((line) => line.split('').map(Number));
 
-const getLowPoints = (input: Input) => {
-	let sum = 0;
+const getLowPoints = (input: Input): Coord[] => {
+	const lowPoints: Coord[] = [];
 	for (let rowIndex = 0; rowIndex < input.length; rowIndex++) {
 		for (let colIndex = 0; colIndex < input[rowIndex].length; colIndex++) {
 			const currentDepth = input[rowIndex][colIndex];
@@ -25,19 +26,21 @@ const getLowPoints = (input: Input) => {
 				currentDepth < depthAbove &&
 				currentDepth < depthBelow
 			) {
-
-				sum += currentDepth + 1;
+				lowPoints.push({ row: rowIndex, col: colIndex, risk: currentDepth + 1 });
 			}
 		}
 	}
 
-	return sum;
+	return lowPoints;
 };
+
+const calculateRisk = (lowPoints: Coord[]) => lowPoints.reduce((acc, curr) => acc + curr.risk, 0);
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
+	const lowPoints = getLowPoints(input);
 
-	return getLowPoints(input);
+	return calculateRisk(lowPoints);
 };
 
 const part2 = (rawInput: string) => {
@@ -56,7 +59,7 @@ const testCase = `
 
 run({
 	part1: {
-		tests: [{ name: 'find low points', input: testCase, expected: 15 }],
+		tests: [{ name: 'calculate risk of low points', input: testCase, expected: 15 }],
 		solution: part1,
 	},
 	part2: {
@@ -64,5 +67,5 @@ run({
 		solution: part2,
 	},
 	trimTestInputs: true,
-	onlyTests: false,
+	onlyTests: true,
 });
