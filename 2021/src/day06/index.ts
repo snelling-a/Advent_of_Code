@@ -34,7 +34,6 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
 	const startingLanternfish = parseInput(rawInput);
-	console.log('startingLanternfish :>> ', startingLanternfish);
 
 	return modelLanternfishGrowthRate(startingLanternfish, 256);
 };
