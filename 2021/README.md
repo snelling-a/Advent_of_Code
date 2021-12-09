@@ -98,16 +98,34 @@ Both parts: 65.573019ms
 
 ```
 Day 08
+<<<<<<< HEAD
 Time part 1: 5.787ms
 Time part 2: 5.315ms
 Both parts: 11.101904000000001ms
+=======
+<<<<<<< HEAD
+Time part 1: -
+Time part 2: -
+Both parts: -
+=======
+Time part 1: 0.791ms
+Time part 2: -
+Both parts: 0.791031ms
+>>>>>>> 3f38524 ([2021] day09 part 1 solved)
+>>>>>>> 4449284 ([2021] day09 part 1 solved)
 ```
 
 ```
 Day 09
+<<<<<<< HEAD
 Time part 1: 3.547ms
 Time part 2: -
 Both parts: 3.547047ms
+=======
+Time part 1: 9.231ms
+Time part 2: -
+Both parts: 9.230825ms
+>>>>>>> 4449284 ([2021] day09 part 1 solved)
 ```
 
 ```
@@ -223,8 +241,18 @@ Both parts: -
 ```
 
 ```
+<<<<<<< HEAD
 Total stars: 22/50
 Total time: 375.407ms
+=======
+<<<<<<< HEAD
+Total stars: 12/50
+Total time: 342.966ms
+=======
+Total stars: 14/50
+Total time: 363.265ms
+>>>>>>> 3f38524 ([2021] day09 part 1 solved)
+>>>>>>> 4449284 ([2021] day09 part 1 solved)
 ```
 
 <!--/RESULTS-->
