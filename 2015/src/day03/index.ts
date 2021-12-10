@@ -4,46 +4,58 @@ type Input = string[];
 
 const parseInput = (rawInput: string): Input => rawInput.split("");
 
-const followDirections = (input: Input) => {
+const followDirections = (input: Input, isRoboSanta = false) => {
   const startingPointKey = { x: 0, y: 0 };
-  let lastPointKey = startingPointKey;
+  let lastSantaPointKey = startingPointKey;
 
-  const map = input.reduce((acc, direction) => {
-    let currentPointKey = lastPointKey;
+  const map = input.reduce((housesMap, direction, inputIndex) => {
+    let currentPointKey = lastSantaPointKey;
 
     switch (direction) {
       case "^":
-        currentPointKey = { x: lastPointKey.x, y: lastPointKey.y - 1 };
-        acc.has(JSON.stringify(currentPointKey))
-          ? acc.get(JSON.stringify(currentPointKey))!.visits++
-          : acc.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastPointKey = currentPointKey;
-        return acc;
+        currentPointKey = {
+          x: lastSantaPointKey.x,
+          y: lastSantaPointKey.y - 1,
+        };
+        housesMap.has(JSON.stringify(currentPointKey))
+          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
+          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
+        lastSantaPointKey = currentPointKey;
+        return housesMap;
       case "v":
-        currentPointKey = { x: lastPointKey.x, y: lastPointKey.y + 1 };
-        acc.has(JSON.stringify(currentPointKey))
-          ? acc.get(JSON.stringify(currentPointKey))!.visits++
-          : acc.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastPointKey = currentPointKey;
-        return acc;
+        currentPointKey = {
+          x: lastSantaPointKey.x,
+          y: lastSantaPointKey.y + 1,
+        };
+        housesMap.has(JSON.stringify(currentPointKey))
+          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
+          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
+        lastSantaPointKey = currentPointKey;
+        return housesMap;
       case ">":
-        currentPointKey = { x: lastPointKey.x + 1, y: lastPointKey.y };
-        acc.has(JSON.stringify(currentPointKey))
-          ? acc.get(JSON.stringify(currentPointKey))!.visits++
-          : acc.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastPointKey = currentPointKey;
-        return acc;
+        currentPointKey = {
+          x: lastSantaPointKey.x + 1,
+          y: lastSantaPointKey.y,
+        };
+        housesMap.has(JSON.stringify(currentPointKey))
+          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
+          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
+        lastSantaPointKey = currentPointKey;
+        return housesMap;
       case "<":
-        currentPointKey = { x: lastPointKey.x - 1, y: lastPointKey.y };
-        acc.has(JSON.stringify(currentPointKey))
-          ? acc.get(JSON.stringify(currentPointKey))!.visits++
-          : acc.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastPointKey = currentPointKey;
-        return acc;
+        currentPointKey = {
+          x: lastSantaPointKey.x - 1,
+          y: lastSantaPointKey.y,
+        };
+        housesMap.has(JSON.stringify(currentPointKey))
+          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
+          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
+        lastSantaPointKey = currentPointKey;
+        return housesMap;
       default:
-        return acc;
+        return housesMap;
     }
-  }, new Map([[JSON.stringify(startingPointKey), { visits: 1 }]]));
+  }, new Map([[JSON.stringify(startingPointKey), { visits: isRoboSanta ? 2 : 1 }]]));
   return map.size;
 };
 
@@ -56,10 +68,8 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
 
-  return;
+  return followDirections(input, true);
 };
-
-const testCase = "";
 
 run({
   part1: {
@@ -75,7 +85,11 @@ run({
     solution: part1,
   },
   part2: {
-    tests: [{ name: "", input: testCase, expected: "" }],
+    tests: [
+      { name: "north/south", input: `^v`, expected: 3 },
+      { name: "back where they started", input: `^>v<`, expected: 3 },
+      { name: "different directions", input: `^v^v^v^v^v`, expected: 11 },
+    ],
     solution: part2,
   },
   trimTestInputs: true,
