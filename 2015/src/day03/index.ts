@@ -1,62 +1,47 @@
 import run from "aocrunner";
 
-type Input = string[];
+type Input = Direction[];
+type Direction = "^" | "v" | ">" | "<";
 
-const parseInput = (rawInput: string): Input => rawInput.split("");
+const parseInput = (rawInput: string): Input => rawInput.split("") as Input;
 
 const followDirections = (input: Input, isRoboSanta = false) => {
-  const startingPointKey = { x: 0, y: 0 };
-  let lastSantaPointKey = startingPointKey;
+  const santaPoints = { regular: { x: 0, y: 0 }, robo: { x: 0, y: 0 } };
 
-  const map = input.reduce((housesMap, direction, inputIndex) => {
-    let currentPointKey = lastSantaPointKey;
+  return input.reduce((housesMap, direction, inputIndex) => {
+    const isRoboOrRegular = isRoboSanta && inputIndex % 2 === 1;
+
+    let currentPointKey = isRoboOrRegular
+      ? santaPoints.robo
+      : santaPoints.regular;
 
     switch (direction) {
       case "^":
-        currentPointKey = {
-          x: lastSantaPointKey.x,
-          y: lastSantaPointKey.y - 1,
-        };
-        housesMap.has(JSON.stringify(currentPointKey))
-          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
-          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastSantaPointKey = currentPointKey;
-        return housesMap;
+        currentPointKey.y--;
+        break;
       case "v":
-        currentPointKey = {
-          x: lastSantaPointKey.x,
-          y: lastSantaPointKey.y + 1,
-        };
-        housesMap.has(JSON.stringify(currentPointKey))
-          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
-          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastSantaPointKey = currentPointKey;
-        return housesMap;
+        currentPointKey.y++;
+        break;
       case ">":
-        currentPointKey = {
-          x: lastSantaPointKey.x + 1,
-          y: lastSantaPointKey.y,
-        };
-        housesMap.has(JSON.stringify(currentPointKey))
-          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
-          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastSantaPointKey = currentPointKey;
-        return housesMap;
+        currentPointKey.x++;
+        break;
       case "<":
-        currentPointKey = {
-          x: lastSantaPointKey.x - 1,
-          y: lastSantaPointKey.y,
-        };
-        housesMap.has(JSON.stringify(currentPointKey))
-          ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
-          : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
-        lastSantaPointKey = currentPointKey;
-        return housesMap;
+        currentPointKey.x--;
       default:
-        return housesMap;
+        break;
     }
-  }, new Map([[JSON.stringify(startingPointKey), { visits: isRoboSanta ? 2 : 1 }]]));
-  return map.size;
+
+    housesMap.has(JSON.stringify(currentPointKey))
+      ? housesMap.get(JSON.stringify(currentPointKey))!.visits++
+      : housesMap.set(JSON.stringify(currentPointKey), { visits: 1 });
+
+    isRoboOrRegular
+      ? (santaPoints.robo = currentPointKey)
+      : (santaPoints.regular = currentPointKey);
+
+    return housesMap;
+  }, new Map([[JSON.stringify(santaPoints.regular), { visits: isRoboSanta ? 2 : 1 }]]))
+    .size;
 };
 
 const part1 = (rawInput: string) => {
