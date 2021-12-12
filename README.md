@@ -5,7 +5,7 @@
 
 ## TODO:
 
--   [ ] [2021 day 08 part 2](https://github.com/snelling-a/Advent_of_Code/pull/14)
+-   [x] ~~[2021 day 08 part 2](https://github.com/snelling-a/Advent_of_Code/pull/14)~~
 -   [ ] [2021 day 09 part 2](https://github.com/snelling-a/Advent_of_Code/pull/13)
 -   [ ] [2021 day 10 part 1 & 2](https://github.com/snelling-a/Advent_of_Code/pull/16)
 -   [ ] [2021 day 11 part 1 & 2](https://github.com/snelling-a/Advent_of_Code/pull/17)
