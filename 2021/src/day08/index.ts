@@ -2,26 +2,70 @@ import run from 'aocrunner';
 
 type Input = SignalOutput[];
 type SignalOutput = { signal: Signal; output: Output };
-type Signal = [string, string, string, string, string, string, string, string, string, string];
+type Signal = Map<string, number>;
 type Output = [string, string, string, string];
 enum SignalLength {
-	zero = 6,
 	one = 2,
+	seven = 3,
+	four = 4,
 	two = 5,
 	three = 5,
-	four = 4,
 	five = 5,
+	zero = 6,
 	six = 6,
-	seven = 3,
-	eight = 7,
 	nine = 6,
+	eight = 7,
 }
+
+const decodeSignal = (rawSignal: string[]) => {
+	const sortedSignal = rawSignal.sort((a, b) => a.length - b.length);
+	// known patterns
+	const one = sortedSignal[0];
+	const seven = sortedSignal[1];
+	const four = sortedSignal[2];
+	const eight = sortedSignal[9];
+	const twoThreeFive = [sortedSignal[3], sortedSignal[4], sortedSignal[5]];
+	const zeroSixNine = [sortedSignal[6], sortedSignal[7], sortedSignal[8]];
+
+
+	// 0 and 9 have full overlaps with 1, 6 does not
+	const six = zeroSixNine.filter((a) => ![...one].every((b) => a.includes(b)))[0];
+	// 0 does not overlap with 4
+	const zero = zeroSixNine
+		.filter((e) => e !== six)
+		.filter((e) => ![...four].every((f) => e.includes(f)))[0];
+	const nine = zeroSixNine.filter((e) => e !== zero && e !== six)[0];
+
+	// 2 and 5 do not overlap with 1, 3 does
+	const three = twoThreeFive.filter((e) => [...one].every((f) => e.includes(f)))[0];
+	// 5 overlaps with 6
+	const five = twoThreeFive.filter((e) => [...e].every((f) => six.includes(f)))[0];
+	const two = twoThreeFive.filter((e) => e !== three && e !== five)[0];
+
+	return new Map([
+		[zero, 0],
+		[one, 1],
+		[two, 2],
+		[three, 3],
+		[four, 4],
+		[five, 5],
+		[six, 6],
+		[seven, 7],
+		[eight, 8],
+		[nine, 9],
+	]);
+};
 
 const parseInput = (rawInput: string): Input =>
 	rawInput.split('\n').map((line) => {
 		const [signal, output] = line.split(' | ');
 
-		return { signal: signal.split(' '), output: output.split(' ') };
+		const rawSignal = signal.split(' ').map((s) => s.split('').sort().join(''));
+
+		return {
+			signal: decodeSignal(rawSignal),
+			output: output.split(' ').map((o) => o.split('').sort().join('')),
+		};
 	}) as Input;
 
 const findUniqueNumbersInOutput = (input: Input): number => {
@@ -40,6 +84,9 @@ const findUniqueNumbersInOutput = (input: Input): number => {
 	return total;
 };
 
+const decodeOutput = ({ signal, output }: SignalOutput) =>
+	Number(output.map((digit) => signal.get(digit)).join(''));
+
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
@@ -49,7 +96,7 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	return;
+	return input.reduce((a, b) => a + decodeOutput(b), 0);
 };
 
 const testCase = `
@@ -71,9 +118,9 @@ run({
 		solution: part1,
 	},
 	part2: {
-		tests: [{ name: '', input: testCase, expected: 61229 }],
+		tests: [{ name: 'decode and total', input: testCase, expected: 61229 }],
 		solution: part2,
 	},
 	trimTestInputs: true,
-	onlyTests: true,
+	onlyTests: false,
 });
