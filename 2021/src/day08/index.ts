@@ -1,7 +1,7 @@
 import run from 'aocrunner';
 
 type Input = SignalOutput[];
-type SignalOutput = [Signal, Output];
+type SignalOutput = { signal: Signal; output: Output };
 type Signal = [string, string, string, string, string, string, string, string, string, string];
 type Output = [string, string, string, string];
 enum SignalLength {
@@ -18,25 +18,16 @@ enum SignalLength {
 }
 
 const parseInput = (rawInput: string): Input =>
-	rawInput
-		.split('\n')
-		.map((line) => line.split(' | ').map((s) => s.split(' ')))
-		.map(([signal, output]) => [
-			sortSignalOrOutput(signal as Signal),
-			sortSignalOrOutput(output as Output),
-		]) as Input;
+	rawInput.split('\n').map((line) => {
+		const [signal, output] = line.split(' | ');
 
-const sortSignalOrOutput = (signalOrOutput: Signal | Output) => {
-	return signalOrOutput.map((code) => code.split('').sort().join(''));
-};
+		return { signal: signal.split(' '), output: output.split(' ') };
+	}) as Input;
 
-const getSignalOutput = (input: Input): Output[] =>
-	input.map(([, output]) => output).reduce<Output[]>((acc, curr) => [...acc, curr], []);
-
-const findUniqueNumbersInOutput = (output: Output[]): number => {
+const findUniqueNumbersInOutput = (input: Input): number => {
 	let total = 0;
-	output.forEach((outputString) =>
-		outputString.forEach((outputDigit) => {
+	input.forEach((signal) =>
+		signal.output.forEach((outputDigit) => {
 			outputDigit.length === SignalLength.one ||
 			outputDigit.length === SignalLength.four ||
 			outputDigit.length === SignalLength.seven ||
@@ -51,9 +42,8 @@ const findUniqueNumbersInOutput = (output: Output[]): number => {
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
-	const output = getSignalOutput(input);
 
-	return findUniqueNumbersInOutput(output);
+	return findUniqueNumbersInOutput(input);
 };
 
 const part2 = (rawInput: string) => {
