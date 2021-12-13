@@ -53,6 +53,46 @@ const foldPaper = (dots: Dots, fold: Fold) => {
 	return foldedPaper;
 };
 
+const getFoldedPaperMin = (folds: Fold[]) => {
+	const foldX: number[] = [];
+	const foldY: number[] = [];
+
+	folds.forEach((fold) => {
+		if (fold.axis === 'x') {
+			foldX.push(fold.pos);
+		}
+		if (fold.axis === 'y') {
+			foldY.push(fold.pos);
+		}
+	});
+
+	return {
+		minX: foldX.reduce((a, b) => (a < b ? a : b)),
+		minY: foldY.reduce((a, b) => (a < b ? a : b)),
+	};
+};
+
+const printFoldedPaper = (input: Input) => {
+	let folded = input.dots;
+	input.folds.forEach((fold) => {
+		folded = foldPaper(folded, fold);
+	});
+
+	const { minX, minY } = getFoldedPaperMin(input.folds);
+	let dotString = '';
+	for (let y = 0; y < minY; y++) {
+		for (let x = 0; x < minX; x++) {
+			if (folded.has(`${x},${y}`)) {
+				dotString += '#';
+			} else {
+				dotString += ' ';
+			}
+		}
+		dotString += '\n';
+	}
+	console.log(dotString);
+};
+
 const part1 = (rawInput: string) => {
 	const { dots, folds } = parseInput(rawInput);
 
@@ -60,9 +100,9 @@ const part1 = (rawInput: string) => {
 };
 
 const part2 = (rawInput: string) => {
-	const { dots, folds } = parseInput(rawInput);
+	const input: Input = parseInput(rawInput);
 
-	return;
+	return printFoldedPaper(input);
 };
 
 const testCase = `
@@ -91,13 +131,13 @@ fold along x=5
 
 run({
 	part1: {
-		tests: [{ name: '', input: testCase, expected: 17 }],
+		tests: [{ name: 'fold once, get length', input: testCase, expected: 17 }],
 		solution: part1,
 	},
 	part2: {
-		tests: [{ name: '', input: testCase, expected: '' }],
+		tests: [{ name: 'mark and fold', input: testCase, expected: undefined }],
 		solution: part2,
 	},
 	trimTestInputs: true,
-	// onlyTests: true,
+	onlyTests: false,
 });
