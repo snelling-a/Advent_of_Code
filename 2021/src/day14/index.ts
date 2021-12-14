@@ -1,64 +1,83 @@
 import run from 'aocrunner';
 
-type Input = [string, Map<string, string>];
-
-const parseInput = (rawInput: string): Input => {
-	const [template, rawInsertions] = rawInput.split('\n\n');
-
-	const insertions = rawInsertions.split('\n').reduce((acc, curr) => {
-		const [rule, insertion] = curr.split(' -> ');
-
-		return acc.set(rule, insertion);
-	}, new Map());
-
-	return [template, insertions];
+type Input = {
+	polymer: string;
+	pairInsertionRules: PairInsertionRule[];
 };
 
-const createPolymer = ([template, insertions]: Input, numberOfSteps: number) => {
-	let polymer = template;
+type PairInsertionRule = {
+	pair: string;
+	insertionRule: string;
+};
 
-	for (let step = 1; step <= numberOfSteps; step++) {
-		let buildPolymer = '';
+const parseInput = (rawInput: string): Input => {
+	const [polymer, rawInsertions] = rawInput.split('\n\n');
 
-		for (let element = 0; element < polymer.length; element++) {
-			const elementToInsert = insertions.get(`${polymer[element]}${polymer[element + 1]}`);
+	const pairInsertionRules = rawInsertions.split('\n').map((rule) => {
+		const [pair, insertionRule] = rule.split(' -> ');
 
-			if (elementToInsert) {
-				buildPolymer += polymer[element] + elementToInsert;
-			} else {
-				buildPolymer += polymer[element];
+		return { pair, insertionRule };
+	});
+
+	return { polymer, pairInsertionRules };
+};
+
+const countChars = ({ polymer, pairInsertionRules }: Input, numberOfSteps: number) => {
+	let polymerPairs = polymer.split('').reduce((map, element, index) => {
+		const pair = `${element}${polymer[index + 1]}`;
+		const pairExists = map.get(pair);
+		pairExists ? map.set(pair, pairExists + 1) : map.set(pair, 1);
+
+		return map;
+	}, new Map<string, number>());
+
+	for (let step = 0; step < numberOfSteps; step++) {
+		polymerPairs = pairInsertionRules.reduce((map, { pair, insertionRule }) => {
+			const pairExists = polymerPairs.get(pair);
+
+			const firstPart = `${pair[0]}${insertionRule}`;
+			const secondPart = `${insertionRule}${pair[1]}`;
+
+			const getFirstPart = map.get(firstPart);
+			const getSecondPart = map.get(secondPart);
+
+			if (pairExists) {
+				getFirstPart
+					? map.set(firstPart, getFirstPart + pairExists)
+					: map.set(firstPart, pairExists);
+				getSecondPart
+					? map.set(secondPart, getSecondPart + pairExists)
+					: map.set(secondPart, pairExists);
 			}
-		}
-		polymer = buildPolymer;
+
+			return map;
+		}, new Map<string, number>());
 	}
 
-	const counts = new Map<string, number>();
-	for (const element of polymer) {
-		const currentElement = counts.get(element);
+	const count = [...polymerPairs.entries()].reduce((map, [pair, count]) => {
+		const elementToCount = pair[0];
+		const elementExists = map.get(elementToCount);
 
-		if (currentElement) {
-			counts.set(element, currentElement + 1);
-		} else {
-			counts.set(element, 1);
-		}
-	}
+		elementExists
+			? map.set(elementToCount, elementExists + count)
+			: map.set(elementToCount, count);
 
-	const max = Math.max(...counts.values());
-	const min = Math.min(...counts.values());
+		return map;
+	}, new Map<string, number>([[polymer[polymer.length - 1], 1]]));
 
-	return max - min;
+	return Math.max(...count.values()) - Math.min(...count.values());
 };
 
 const part1 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	return createPolymer(input, 10);
+	return countChars(input, 10);
 };
 
 const part2 = (rawInput: string) => {
 	const input = parseInput(rawInput);
 
-	return;
+	return countChars(input, 40);
 };
 
 const testCase = `
@@ -85,14 +104,24 @@ CN -> C
 run({
 	part1: {
 		tests: [
-			{ name: 'most common - least common after 10 steps', input: testCase, expected: 1588 },
+			{
+				name: 'difference between most and least common element after 10 steps',
+				input: testCase,
+				expected: 1588,
+			},
 		],
 		solution: part1,
 	},
 	part2: {
-		tests: [{ name: '', input: testCase, expected: '' }],
+		tests: [
+			{
+				name: 'difference between most and least common element after 40 steps',
+				input: testCase,
+				expected: 2188189693529,
+			},
+		],
 		solution: part2,
 	},
 	trimTestInputs: true,
-	// onlyTests: true,
+	onlyTests: false,
 });
