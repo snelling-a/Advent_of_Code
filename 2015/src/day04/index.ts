@@ -25,16 +25,17 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
     const input = parseInput(rawInput);
-    return;
+
+    return getLowestNonce(input, 6);
 };
 
-const testCase = '';
+const testCases = { a: `abcdef`, b: `pqrstuv` };
 
 run({
     part1: {
         tests: [
-            { name: '', input: `abcdef`, expected: 609043 },
-            { name: '', input: `pqrstuv`, expected: 1048970 },
+            { name: '', input: testCases.a, expected: 609043 },
+            { name: '', input: testCases.b, expected: 1048970 },
         ],
         solution: part1,
     },
@@ -43,5 +44,5 @@ run({
         solution: part2,
     },
     trimTestInputs: true,
-    // onlyTests: true,
+    onlyTests: false,
 });
