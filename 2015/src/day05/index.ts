@@ -17,6 +17,14 @@ const naughtyOrNice = (string: string) => {
     return hasVowels() && hasConsecutiveLetters && !hasBadStrings;
 };
 
+const naughtyOrNice2 = (string: string) => {
+    const hasPairOfLetters = /(\w{2}).*\1/.test(string);
+
+    const hasLetterBetween = /(\w)\w\1/.test(string);
+
+    return hasPairOfLetters && hasLetterBetween;
+};
+
 const part1 = (rawInput: string) => {
     const input = parseInput(rawInput);
 
@@ -31,25 +39,44 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
     const input = parseInput(rawInput);
 
-    return;
+    return input.reduce((acc, string) => {
+        if (naughtyOrNice2(string)) {
+            return acc + 1;
+        }
+        return acc;
+    }, 0);
 };
-
-const testCase = `
-ugknbfddgicrmopn
-jchzalrnumimnmhp
-haegwjzuvuyypxyu
-dvszwmarrgswjxmb
-`;
 
 run({
     part1: {
-        tests: [{ name: '', input: testCase, expected: 1 }],
+        tests: [
+            {
+                name: '',
+                input: `
+        ugknbfddgicrmopn
+        jchzalrnumimnmhp
+        haegwjzuvuyypxyu
+        dvszwmarrgswjxmb
+        `,
+                expected: 1,
+            },
+        ],
         solution: part1,
     },
     part2: {
-        tests: [{ name: '', input: testCase, expected: '' }],
+        tests: [
+            {
+                name: '',
+                input: `
+        qjhvhtzxzqqjkmpb
+        uurcxstgmygtbstg
+        ieodomkazucvgmuy
+        `,
+                expected: 1,
+            },
+        ],
         solution: part2,
     },
     trimTestInputs: true,
-    // onlyTests: true,
+    onlyTests: false,
 });
