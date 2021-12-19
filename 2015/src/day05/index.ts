@@ -28,23 +28,13 @@ const naughtyOrNice2 = (string: string) => {
 const part1 = (rawInput: string) => {
     const input = parseInput(rawInput);
 
-    return input.reduce((acc, string) => {
-        if (naughtyOrNice(string)) {
-            return acc + 1;
-        }
-        return acc;
-    }, 0);
+    return input.filter(naughtyOrNice).length;
 };
 
 const part2 = (rawInput: string) => {
     const input = parseInput(rawInput);
 
-    return input.reduce((acc, string) => {
-        if (naughtyOrNice2(string)) {
-            return acc + 1;
-        }
-        return acc;
-    }, 0);
+    return input.filter(naughtyOrNice2).length;
 };
 
 run({
