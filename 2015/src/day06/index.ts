@@ -27,10 +27,9 @@ const parseInput = (rawInput: string): Input =>
 const create2DArray = <T>(rows: number, cols: number, defaultValue: T): T[][] =>
     Array.from(Array(rows), () => Array(cols).fill(defaultValue));
 
-const lights = create2DArray(1000, 1000, false);
-
 const part1 = (rawInput: string) => {
     const input = parseInput(rawInput);
+    const lights = create2DArray(1000, 1000, false);
 
     for (const [action, { from, to }] of input) {
         for (let row = from.row; row <= to.row; row++) {
@@ -58,11 +57,33 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
     const input = parseInput(rawInput);
+    const lights = create2DArray(1000, 1000, 0);
 
-    return;
+    for (const [action, { from, to }] of input) {
+        for (let row = from.row; row <= to.row; row++) {
+            for (let column = from.column; column <= to.column; column++) {
+                switch (action) {
+                    case 'turn on':
+                        lights[row][column]++;
+                        break;
+                    case 'turn off':
+                        if (lights[row][column] > 0) {
+                            lights[row][column]--;
+                        }
+                        break;
+                    case 'toggle':
+                        lights[row][column] += 2;
+                        break;
+                }
+            }
+        }
+    }
+
+    return lights.reduce((acc, row) => {
+        const lit = row.reduce((acc, light) => acc + light, 0);
+        return acc + lit;
+    }, 0);
 };
-
-// const testCase = '';
 
 run({
     part1: {
@@ -86,9 +107,20 @@ run({
         solution: part1,
     },
     part2: {
-        // tests: [{ name: '', input: testCase, expected: '' }],
+        tests: [
+            {
+                name: 'increase total brightness by 1',
+                input: `turn on 0,0 through 0,0`,
+                expected: 1,
+            },
+            {
+                name: 'increase total brightness by 2000000',
+                input: `toggle 0,0 through 999,999`,
+                expected: 2000000,
+            },
+        ],
         solution: part2,
     },
     trimTestInputs: true,
-    // onlyTests: true,
+    onlyTests: false,
 });
