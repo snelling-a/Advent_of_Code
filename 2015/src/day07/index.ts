@@ -81,7 +81,9 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
     const input = parseInput(rawInput);
 
-    return;
+    input.set('b', part1(rawInput) as number);
+
+    return emulateSignal(input, 'a');
 };
 
 const testCase = `
@@ -121,5 +123,5 @@ const runTests = run({
         solution: part2,
     },
     trimTestInputs: true,
-    // onlyTests: true,
+    onlyTests: false,
 });
