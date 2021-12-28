@@ -23,7 +23,7 @@ const parseInput = (rawInput: string): Input =>
 const BITWISE_METHODS = {
     AND: (a: number, b: number) => a & b,
     OR: (a: number, b: number) => a | b,
-    NOT: (a: number) => ~a,
+    NOT: (a: number) => ~a & 65535,
     LSHIFT: (a: number, b: number) => a << b,
     RSHIFT: (a: number, b: number) => a >> b,
     ASSIGN: (a: any) => a,
@@ -70,8 +70,8 @@ const part1 = (rawInput: string) => {
     // return emulateSignal(input, 'e');
     // return emulateSignal(input, 'f');
     // return emulateSignal(input, 'g');
-    // return emulateSignal(input, 'h'); // failing?
-    // return emulateSignal(input, 'i'); // failing?
+    // return emulateSignal(input, 'h');
+    // return emulateSignal(input, 'i');
     // return emulateSignal(input, 'x');
     // return emulateSignal(input, 'y');
 
